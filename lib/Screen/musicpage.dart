@@ -19,8 +19,6 @@ class _PageOneState extends State<PageOne> with SingleTickerProviderStateMixin {
     _animationController.forward();
   }
 
-  String appid = 'ca-app-pub-8300119033769700~3662874260';
-
   @override
   void initState() {
     super.initState();

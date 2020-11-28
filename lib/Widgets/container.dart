@@ -1,4 +1,5 @@
 import 'package:Alarm/Const/const.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
 
@@ -7,13 +8,17 @@ class ContainerAd extends StatefulWidget {
   final loop;
 
   const ContainerAd({Key key, this.provider, this.loop}) : super(key: key);
-  @override
   _ContainerAdState createState() => _ContainerAdState();
 }
 
 class _ContainerAdState extends State<ContainerAd> {
-  int coins;
-  RewardedVideoAd videoAd = RewardedVideoAd.instance;
+  InterstitialAd interstitialAd = InterstitialAd(
+    adUnitId: 'ca-app-pub-8300119033769700/3227436599',
+    targetingInfo: targetingInfo,
+    listener: (MobileAdEvent event) {
+      print("InterstitialAd event is $event");
+    },
+  );
   static const MobileAdTargetingInfo targetingInfo = MobileAdTargetingInfo(
       testDevices: ['testDevices'],
       childDirected: false,
@@ -22,35 +27,30 @@ class _ContainerAdState extends State<ContainerAd> {
   @override
   void initState() {
     super.initState();
-    FirebaseAdMob.instance.initialize(appId: FirebaseAdMob.testAppId);
-    videoAd.load(
-        adUnitId: RewardedVideoAd.testAdUnitId, targetingInfo: targetingInfo);
+    // interstitialAd.load();
   }
 
   @override
   Widget build(BuildContext context) {
-    print('Coinsssssssssss === $coins');
     return Container(
       child: GestureDetector(
         onTap: () {
-          try {
-            if (coins == null) {
-              videoAd.show();
-              RewardedVideoAd.instance.listener = (RewardedVideoAdEvent event,
-                  {String rewardType, int rewardAmount}) {
-                if (event == RewardedVideoAdEvent.rewarded) {
-                  setState(() {
-                    // Here, apps should update state to reflect the reward.
-                    coins = 10;
-                  });
-                }
-              };
-            } else {
-              widget.provider.setMusic(widget.loop);
-              Navigator.pop(context);
+          if (widget.loop.isLocked) {
+            try {
+              interstitialAd
+                ..load()
+                ..show(
+                    anchorType: AnchorType.bottom,
+                    anchorOffset: 0.0,
+                    horizontalCenterOffset: 0.0);
+            } catch (e) {
+              print('Errorrrrrrrrrrrrrrrrrrrrr $e');
             }
-          } catch (e) {
-            print('Errorrrrrrrrrrrrrrrrrrrrr $e');
+            widget.provider.setMusic(widget.loop);
+            Navigator.pop(context);
+          } else {
+            widget.provider.setMusic(widget.loop);
+            Navigator.pop(context);
           }
         },
         child: Stack(
@@ -59,8 +59,12 @@ class _ContainerAdState extends State<ContainerAd> {
               padding: const EdgeInsets.all(8.0),
               child: Container(
                   decoration: BoxDecoration(
-                      color: kPrimaryColor,
+                      color: Colors.white,
                       borderRadius: BorderRadius.circular(24),
+                      image: DecorationImage(
+                          image: CachedNetworkImageProvider(
+                              'https://firebasestorage.googleapis.com/v0/b/alarm-20d95.appspot.com/o/Music%20Files%2FImages%2Floop-logo-vector-ribbon-lettering-260nw-1425991553.png?alt=media&token=cea4277c-a615-4b10-8fa6-90bbd32beaa6'),
+                          fit: BoxFit.contain),
                       boxShadow: [
                     BoxShadow(
                         blurRadius: 30,
@@ -74,10 +78,10 @@ class _ContainerAdState extends State<ContainerAd> {
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
-                      Colors.white60,
-                      Colors.white10,
-                      Colors.black12,
-                      Colors.black45
+                      Colors.white54,
+                      // Colors.white10,
+                      Colors.black26,
+                      Colors.black54
                     ],
                     begin: Alignment.bottomCenter,
                     end: Alignment.topCenter,
@@ -98,20 +102,6 @@ class _ContainerAdState extends State<ContainerAd> {
                       fontFamily: 'Mon',
                       fontSize: 15),
                 )),
-            coins == null
-                ? Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: Colors.black38,
-                          backgroundBlendMode: BlendMode.darken,
-                          borderRadius: BorderRadius.circular(24)),
-                      child: Center(
-                        child: Icon(Icons.lock),
-                      ),
-                    ),
-                  )
-                : Container()
           ],
         ),
       ),

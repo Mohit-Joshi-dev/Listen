@@ -1,4 +1,5 @@
 import 'package:Alarm/Const/const.dart';
+import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 
 class OfflineWidget extends StatelessWidget {
@@ -21,7 +22,11 @@ class OfflineWidget extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Icon(Icons.network_check, size: 130),
+                  Container(
+                      height: _height / 5,
+                      child: FlareActor('assets/animations/NoNetwork.flr',
+                          animation: 'no_netwrok',
+                          alignment: Alignment.center)),
                   SizedBox(height: 20),
                   Text(
                     'Ooops ! ',

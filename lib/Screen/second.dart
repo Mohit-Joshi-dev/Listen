@@ -184,7 +184,7 @@ class _SecondMusicState extends State<SecondMusic>
                 Expanded(
                     child: musics == null
                         ? Center(child: CircularProgressIndicator())
-                        : GridViews(musics: musics, provider: provider)),
+                        : GridViews(musics: musics)),
               ],
             ),
           );

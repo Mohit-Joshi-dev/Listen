@@ -1,9 +1,11 @@
 import 'package:Alarm/Models/loops.dart';
 import 'package:Alarm/Models/music.dart';
 import 'package:Alarm/Providers/nowplaying_provider.dart';
+import 'package:Alarm/Screen/Loading/loading.dart';
 import 'package:Alarm/Services/firestore_service.dart';
 import 'package:Alarm/Services/firestore_service_loops.dart';
 import 'package:connectivity_wrapper/connectivity_wrapper.dart';
+import 'package:firebase_admob/firebase_admob.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -17,6 +19,8 @@ void main() async {
 
   final FirestoreService _db = FirestoreService();
   final FirestoreServiceLoops _dpLoops = FirestoreServiceLoops();
+  FirebaseAdMob.instance
+      .initialize(appId: 'ca-app-pub-8300119033769700~3662874260');
 
   runApp(
     MultiProvider(
@@ -43,9 +47,9 @@ class MyApp extends StatelessWidget {
           value: SystemUiOverlayStyle(
             statusBarColor: Colors.transparent,
           ),
-          child: PageOne(),
+          child: Loading(),
         ),
-        title: 'Flutter Demo',
+        title: 'Night Time',
         theme: ThemeData(
           primarySwatch: Colors.blue,
           fontFamily: 'Mon',
@@ -53,6 +57,7 @@ class MyApp extends StatelessWidget {
         ),
         debugShowCheckedModeBanner: false,
         routes: {
+          // '/': (context) => Loading(),
           '/second': (context) => SecondMusic(),
           '/allMusic': (context) => AllMusic()
         },

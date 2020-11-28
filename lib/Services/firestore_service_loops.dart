@@ -7,7 +7,6 @@ class FirestoreServiceLoops {
   Stream<List<Loops>> getLoops() {
     return _db
         .collection("loops")
-        .orderBy("name", descending: true)
         .snapshots()
         .map((s) => s.docs.map((docs) => Loops.fromJson(docs.data())).toList());
   }
