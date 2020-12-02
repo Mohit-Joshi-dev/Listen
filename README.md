@@ -3,7 +3,7 @@
 A Music player with calming musics & loops to relax
 Fully made with [Flutter.](https://flutter.dev)
 <br>
-Available for Android on Google Playstore. You can download it [here.]()
+Available for Android on Google Playstore. You can download it [here.](https://play.google.com/store/apps/details?id=com.rawlin.NightTime)
 
 
 <img src="https://github.com/Mohit-Joshi-dev/Night-Time/blob/main/Gif.gif" width="250">
